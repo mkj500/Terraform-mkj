@@ -88,7 +88,7 @@ resource "aws_nat_gateway" "nat" {
 }
 
 resource "aws_route_table" "private" {
-  count = length(var.public_cidrs)  # one per NAT for high availability
+  count = length(var.public_cidrs) # one per NAT for high availability
 
   vpc_id = aws_vpc.main.id
 

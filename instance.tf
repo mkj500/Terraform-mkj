@@ -37,11 +37,11 @@ resource "aws_security_group" "public" {
 }
 
 resource "aws_instance" "private" {
-  ami                         = "ami-068c0051b15cdb816"
-  instance_type               = "t3.micro"
-  key_name                    = "main"
-  vpc_security_group_ids      = [aws_security_group.private.id]
-  subnet_id                   = aws_subnet.private[0].id
+  ami                    = "ami-068c0051b15cdb816"
+  instance_type          = "t3.micro"
+  key_name               = "main"
+  vpc_security_group_ids = [aws_security_group.private.id]
+  subnet_id              = aws_subnet.private[0].id
 
   tags = {
     Name = "${var.env_code}-private"
@@ -58,7 +58,7 @@ resource "aws_security_group" "private" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["95.210.55.199/32"] 
+    cidr_blocks = ["95.210.55.199/32"]
   }
 
   egress {
