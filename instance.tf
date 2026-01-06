@@ -39,6 +39,14 @@ resource "aws_security_group" "public" {
     cidr_blocks = ["95.210.55.199/32"]
   }
 
+  ingress {
+    description = "HTTP form public"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
