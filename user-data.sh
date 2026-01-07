@@ -1,5 +1,4 @@
 #!/bin/bash
-<<<<<<< HEAD
 yum update -y
 yum install -y nginx git
 systemctl enable nginx
