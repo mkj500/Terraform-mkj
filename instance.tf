@@ -20,6 +20,7 @@ resource "aws_instance" "public" {
   subnet_id                   = aws_subnet.public[0].id
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.public.id]
+  user_data                   = file("user-data.sh")
 
   user_data = file("user-data.sh")
 
@@ -43,6 +44,14 @@ resource "aws_security_group" "public" {
 
   ingress {
     description = "SSH from my PC"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTP form public"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
