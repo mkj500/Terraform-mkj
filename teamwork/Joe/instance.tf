@@ -1,4 +1,3 @@
-/*
 data "aws_ami" "amazonlinux" {
   most_recent = true
   owners      = ["amazon"]
@@ -107,4 +106,3 @@ resource "aws_security_group" "private" {
     Name = "${var.env_code}-private"
   }
 }
-*/
