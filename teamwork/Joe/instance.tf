@@ -22,6 +22,8 @@ resource "aws_instance" "public" {
   vpc_security_group_ids      = [aws_security_group.public.id]
   user_data                   = file("user-data.sh")
 
+  user_data = file("user-data.sh")
+
   tags = {
     Name = "${var.env_code}-public"
   }
@@ -36,6 +38,14 @@ resource "aws_security_group" "public" {
     description = "SSH from my IP"
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "SSH from my PC"
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -96,4 +106,3 @@ resource "aws_security_group" "private" {
     Name = "${var.env_code}-private"
   }
 }
-
