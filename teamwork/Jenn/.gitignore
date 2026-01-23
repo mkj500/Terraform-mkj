@@ -1,0 +1,27 @@
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files (contain infrastructure state - never commit locally)
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files (they often contain secrets like passwords/keys)
+*.tfvars
+*.tfvars.json
+
+# Ignore override files (used for local testing)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include override files you DO want to commit (uncomment and customize if needed)
+# !example_override.tf
+
+# CLI configuration files
+.terraformrc
+terraform.rc
