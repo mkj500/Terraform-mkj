@@ -1,11 +1,28 @@
-/*
+data "aws_ami" "amazonlinux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+}
+
 resource "aws_instance" "public" {
-  ami                         = "ami-068c0051b15cdb816"
-  associate_public_ip_address = true
+  ami                         = data.aws_ami.amazonlinux.id
   instance_type               = "t3.micro"
   key_name                    = "main"
-  vpc_security_group_ids      = [aws_security_group.public.id]
   subnet_id                   = aws_subnet.public[0].id
+  associate_public_ip_address = true
+  vpc_security_group_ids      = [aws_security_group.public.id]
+  user_data                   = file("user-data.sh")
+
+  user_data = file("user-data.sh")
 
   tags = {
     Name = "${var.env_code}-public"
@@ -14,15 +31,31 @@ resource "aws_instance" "public" {
 
 resource "aws_security_group" "public" {
   name        = "${var.env_code}-public"
-  description = "Allow inbound traffic"
+  description = "Allow inbound SSH from your IP"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description = "SSH from public"
+    description = "SSH from my IP"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["95.210.55.199/32"] # Replace with your IP if needed, or "0.0.0.0/0" for testing
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "SSH from my PC"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTP form public"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
@@ -38,11 +71,11 @@ resource "aws_security_group" "public" {
 }
 
 resource "aws_instance" "private" {
-  ami                    = "ami-068c0051b15cdb816"
+  ami                    = data.aws_ami.amazonlinux.id
   instance_type          = "t3.micro"
   key_name               = "main"
-  vpc_security_group_ids = [aws_security_group.private.id]
   subnet_id              = aws_subnet.private[0].id
+  vpc_security_group_ids = [aws_security_group.private.id]
 
   tags = {
     Name = "${var.env_code}-private"
@@ -51,7 +84,7 @@ resource "aws_instance" "private" {
 
 resource "aws_security_group" "private" {
   name        = "${var.env_code}-private"
-  description = "Allow VPC traffic"
+  description = "Allow SSH only from inside the VPC"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -59,7 +92,7 @@ resource "aws_security_group" "private" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["95.210.55.199/32"]
+    cidr_blocks = [var.vpc_cidr]
   }
 
   egress {
@@ -73,4 +106,3 @@ resource "aws_security_group" "private" {
     Name = "${var.env_code}-private"
   }
 }
-*/
