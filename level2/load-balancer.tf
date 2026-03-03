@@ -1,3 +1,4 @@
+
 resource "aws_security_group" "load_balancer" {
   name        = "${var.env_code}-load-balancer"
   description = "Allow port 80 TCP inbound to ELB"
