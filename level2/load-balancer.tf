@@ -54,6 +54,7 @@ resource "aws_lb_target_group" "main" {
   }
 }
 
+/*
 resource "aws_lb_target_group_attachment" "main" {
   count = 2
 
@@ -61,6 +62,7 @@ resource "aws_lb_target_group_attachment" "main" {
   target_id        = aws_instance.public[count.index].id
   port             = 80
 }
+*/
 
 resource "aws_lb_listener" "main" {
   load_balancer_arn = aws_lb.main.arn
