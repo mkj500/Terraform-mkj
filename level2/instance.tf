@@ -102,7 +102,7 @@ resource "aws_security_group" "private" {
 }
 
 resource "aws_launch_template" "main" {
-  name_prefix   = "${var.env_code}-"  # use name_prefix, not name
+  name_prefix   = "${var.env_code}-"  
   image_id      = data.aws_ami.amazonlinux.id
   instance_type = "t3.micro"
 
