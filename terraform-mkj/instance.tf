@@ -22,7 +22,23 @@ resource "aws_security_group" "public" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["95.210.55.199/32"] # Replace with your IP if needed, or "0.0.0.0/0" for testing
+    cidr_blocks = ["95.210.55.199/32"] 
+  }
+
+ ingress {
+    description     = "HTTP from public"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_Security_group.load_balancer.id]
+  }
+
+ ingress {
+    description = "HTTP from load balancer"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"] 
   }
 
   egress {
